@@ -1,0 +1,162 @@
+body {
+    font-family: 'Times New Roman', Times, serif
+}
+
+.forms-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin-left: 80px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-right: 85px;
+}
+
+.add-product-form {
+    color: white;
+    flex: 1;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.add-product-form label {
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.add-product-form input[type="text"],
+.add-product-form input[type="number"],
+.add-product-form select {
+    color: white;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid #ccc;
+}
+
+.add-product-form button {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+.add-product-form button:hover {
+    background-color: #2980b9;
+}
+
+.sale-form {
+    color: white;
+    flex: 1; 
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    max-width: 400px;
+    margin-bottom: 20px; 
+}
+
+.sale-form label {
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.sale-form input[type="text"],
+.sale-form input[type="number"],
+.sale-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid #ccc;
+    color: white;
+    
+}
+
+.add-product-form select option,
+.sale-form select option {
+    background-color: #333; 
+    color: white; 
+}
+
+.sale-form button {
+    background-color: #e74c3c;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%; 
+    box-sizing: border-box;
+}
+
+.sale-form button:hover {
+    background-color: #c0392b;
+}
+
+#productContainer {
+    margin-left: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    justify-content: flex-start;
+}
+
+.image-box {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.image-box img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.image-box .name {
+    margin-top: 10px;
+    font-size: 16px;
+    color: white;
+    word-wrap: break-word;
+}
+
+.alert {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 5px;
+    display: none;
+}

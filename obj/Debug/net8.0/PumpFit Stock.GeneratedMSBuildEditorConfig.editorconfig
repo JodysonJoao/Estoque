@@ -1,0 +1,51 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = PumpFit_Stock
+build_property.RootNamespace = PumpFit_Stock
+build_property.ProjectDir = D:\Meus Estudos\Projetos\PumpFit Stock\PumpFit Stock\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\Meus Estudos\Projetos\PumpFit Stock\PumpFit Stock
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/Meus Estudos/Projetos/PumpFit Stock/PumpFit Stock/Pages/estoque.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcZXN0b3F1ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Meus Estudos/Projetos/PumpFit Stock/PumpFit Stock/Pages/login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcbG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Meus Estudos/Projetos/PumpFit Stock/PumpFit Stock/Pages/paginainicial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNccGFnaW5haW5pY2lhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Meus Estudos/Projetos/PumpFit Stock/PumpFit Stock/Pages/register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNccmVnaXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Meus Estudos/Projetos/PumpFit Stock/PumpFit Stock/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Meus Estudos/Projetos/PumpFit Stock/PumpFit Stock/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-71gcph3y3p

@@ -1,0 +1,96 @@
+body {
+    background-image: url(/images/mountains-8434315_1920.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
+    margin: 0;
+    height: 100vh;
+}
+
+.ELITE {
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    color: white;
+}
+
+.sidebar {
+    height: 100%;
+    width: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgb(156, 119, 80);
+    color: #fff;
+    padding: 15px 10px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+    transition: width 0.3s ease;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.perfil {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.semfoto {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.nomedouser {
+    color: #fff;
+    font-size: 16px;
+    opacity: 0;
+    display: inline-block;
+}
+
+.sidebar:hover .nomedouser {
+    opacity: 1;
+}
+
+.sidebar:hover {
+    width: 250px;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    white-space: nowrap;
+}
+
+    .sidebar-item:hover {
+        background-color: #d3bebe67;
+        padding: 8px;
+        border-radius: 15px;
+    }
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.sidebar-item img {
+    width: 25px;
+    height: 25px;
+    transition: margin-right 0.3s ease;
+}
+
+.sidebar-item span {
+    opacity: 0;
+    transition: opacity 0.3s ease, margin-left 0.3s ease;
+    margin-left: 10px;
+}
+
+.sidebar:hover .sidebar-item span {
+    opacity: 1;
+}
+
+.sidebar:hover .sidebar-item img {
+    margin-right: 15px;
+}

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - PumpFit_Stock</title>
+    <link rel="stylesheet" href="~/css/sidebar.css">
+    <link rel="stylesheet" href="~/css/paginainicial.css">
+    <script src="~/js/LoginRegister.js" defer></script>
+    <script src="~/js/estoque.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1 class="ELITE">ELITE</h1>
+        @if (!string.IsNullOrEmpty(ViewData["Title"] as string))
+
+        {
+            <h2>@ViewData["Title"]</h2>
+        }
+    </header>
+    <div class="sidebar">
+        <div class="perfil">
+            <img src="~/images/semfoto.png" alt="semfoto" class="semfoto">
+            <span class="nomedouser">Nome</span>
+        </div>
+        <a href="/paginainicial">
+            <div class="sidebar-item">
+                <img src="~/images/home.png" alt="home">
+                <span class="item-tet">Inicio</span>
+            </div>
+        </a>
+        <a href="/configuracoes">
+            <div class="sidebar-item">
+                <img src="~/images/settings.png" alt="settings">
+                <span class="item-text2">Configurações</span>
+            </div>
+        </a>
+        <a href="/estoque">
+            <div class="sidebar-item">
+                <img src="~/images/store.png" alt="loja">
+                <span class="item-text2">Estoque</span>
+            </div>
+        </a>
+        <a href="/Contato">
+            <div class="sidebar-item">
+                <img src="~/images/contato.png" alt="chat">
+                <span class="item-text3">Contato</span>
+            </div>
+        </a>
+    </div>
+    <main role="main" class="container">
+        @RenderBody()
+    </main>
+</body>
+</html>

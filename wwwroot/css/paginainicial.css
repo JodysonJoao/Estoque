@@ -1,0 +1,33 @@
+.Mensagem {
+    padding-top: 30px;
+    text-align: center;
+    color: #F5F5DC;
+    font-size: 30px; 
+    font-weight: bold; 
+    
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.start-button {
+    display: inline-block;
+    background-color: #784212; 
+    color: #fff; 
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.start-button:hover {
+    background-color: #FFA500; 
+    transform: scale(1.1); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+

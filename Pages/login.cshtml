@@ -1,0 +1,26 @@
+﻿@page
+@model PumpFit_Stock.Pages.loginModel
+@{
+}
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELITE-register</title>
+    <link rel="stylesheet" href="~/css/LoginRegister.css">
+    <script src="~/js/LoginRegister.js"></script>
+</head>
+<body>
+    <form id="Dados">
+    <div class="caixadelogin">
+        ELITE
+        <div class="inputs">
+            <input type="text" id="username"  placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="Login()" type="button" class="submit-button">Login</button>
+    </div>
+    </form>
+    <button onclick="Logout()">Logout</button>
+</body>
+</html>
