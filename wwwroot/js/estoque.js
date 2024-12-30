@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const productBox = document.createElement('div');
                     productBox.classList.add('image-box');
                     productBox.innerHTML = `
-                        <img src="${produto.imagem}" alt="${produto.nome}">
+                        <img src="${produto.imagemDTO}" alt="${produto.nome}">
                         <div class="name">ID: ${produto.id}</div>
                         <div class="name">${produto.nome}</div>
                         <div class="details">Quantidade: ${produto.quantidade}</div>
@@ -105,17 +105,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (produto.quantidade >= quantidadeVenda) {
                             produto.quantidade -= quantidadeVenda;
 
+                            const produtoAtualizado = {
+                                id: produto.id,
+                                nome: produto.nome,
+                                quantidade: produto.quantidade,
+                                tamanho: produto.tamanho,
+                                cor: produto.cor,
+                                imagem: produto.imagemDTO
+                            };
+
                             fetch(`/api/produtos/${produto.id}`, {
                                 method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify(produto),
+                                body: JSON.stringify(produtoAtualizado),
                             })
-                                .then(() => {
+                                .then((response) => {
+                                    if (!response.ok) {
+                                        throw new Error('Erro ao atualizar produto.');
+                                    }
                                     alert('Venda realizada com sucesso!');
                                     updateProductList();
                                     saleForm.reset();
+                                })
+                                .catch((error) => {
+                                    console.error('Erro ao atualizar produto:', error);
+                                    alert('Erro ao atualizar produto.');
                                 });
                         } else {
                             alert('Quantidade insuficiente em estoque.');
@@ -127,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
     window.deleteProduct = (id) => {
         fetch(`/api/produtos/${id}`, {
             method: 'DELETE',
@@ -134,9 +151,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json',
             },
         })
-            .then(() => updateProductList())
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Erro ao deletar produto.');
+                }
+                updateProductList();
+            })
             .catch((error) => {
                 console.error('Erro ao deletar produto:', error);
+                alert('Erro ao deletar produto.');
             });
     };
 

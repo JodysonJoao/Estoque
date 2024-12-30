@@ -19,31 +19,60 @@ namespace PumpFit_Stock.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Produto>>> Get()
+        public async Task<ActionResult<IEnumerable<ProductAddDTO>>> Get()
         {
-            return await _context.Produtos.OrderBy(p => p.Id).ToListAsync();
+            var produtos = await _context.Produtos
+                .OrderBy(p => p.Id)
+                .Select(p => new ProductAddDTO
+                {
+                    Id = p.Id,
+                    Nome = p.Nome,
+                    Quantidade = p.Quantidade,
+                    Tamanho = p.Tamanho,
+                    Cor = p.Cor,
+                    ImagemDTO = p.Imagem
+                })
+                .ToListAsync();
+
+            return Ok(produtos);
         }
 
+
+
+
         [HttpPost]
-        public async Task<ActionResult<Produto>> Post([FromBody] Produto produto)
+        public async Task<ActionResult<ProductAddDTO>> Post([FromBody] ProductCreateDTO produtoDTO)
         {
-            if (produto == null)
+            if (produtoDTO == null)
             {
                 return BadRequest("Produto não pode ser nulo.");
             }
 
-            var produtoExistente = await _context.Produtos
-                .FirstOrDefaultAsync(p => p.Nome == produto.Nome && p.Tamanho == produto.Tamanho && p.Cor == produto.Cor);
-
-            if (produtoExistente != null)
+            var produto = new Produto
             {
-                return Conflict("Produto já existe.");
-            }
+                Nome = produtoDTO.Nome,
+                Quantidade = produtoDTO.Quantidade,
+                Tamanho = produtoDTO.Tamanho,
+                Cor = produtoDTO.Cor,
+                Imagem = produtoDTO.Imagem
+            };
 
             _context.Produtos.Add(produto);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = produto.Id }, produto);
+
+            var productAddDTO = new ProductAddDTO
+            {
+                Id = produto.Id,
+                Nome = produto.Nome,
+                Quantidade = produto.Quantidade,
+                Tamanho = produto.Tamanho,
+                Cor = produto.Cor,
+                ImagemDTO = produto.Imagem
+            };
+
+            return CreatedAtAction(nameof(Get), new { id = produto.Id }, productAddDTO);
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] Produto produto)
@@ -84,9 +113,16 @@ namespace PumpFit_Stock.Controllers
             }
 
             _context.Produtos.Remove(produto);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao deletar produto: {ex.Message}");
+                return StatusCode(500, "Erro ao deletar produto.");
+            }
 
-            await ReordenarIds();
             return NoContent();
         }
 
