@@ -19,58 +19,41 @@ namespace PumpFit_Stock.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductAddDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<ProductAddDto>>> Get([FromServices] ProductMappingService mappingService)
         {
             var produtos = await _context.Produtos
                 .OrderBy(p => p.Id)
-                .Select(p => new ProductAddDTO
-                {
-                    Id = p.Id,
-                    Nome = p.Nome,
-                    Quantidade = p.Quantidade,
-                    Tamanho = p.Tamanho,
-                    Cor = p.Cor,
-                    ImagemDTO = p.Imagem
-                })
                 .ToListAsync();
 
-            return Ok(produtos);
+            var produtosDto = produtos.Select(p => mappingService.ToAddDto(p)).ToList();
+
+            return Ok(produtosDto);
         }
 
 
-
-
         [HttpPost]
-        public async Task<ActionResult<ProductAddDTO>> Post([FromBody] ProductCreateDTO produtoDTO)
+        public async Task<ActionResult<ProductAddDto>> Post([FromBody] ProductCreateDto produtoDto)
         {
-            if (produtoDTO == null)
+            if (produtoDto == null)
             {
                 return BadRequest("Produto não pode ser nulo.");
             }
 
             var produto = new Produto
             {
-                Nome = produtoDTO.Nome,
-                Quantidade = produtoDTO.Quantidade,
-                Tamanho = produtoDTO.Tamanho,
-                Cor = produtoDTO.Cor,
-                Imagem = produtoDTO.Imagem
+                Nome = produtoDto.Nome,
+                Quantidade = produtoDto.Quantidade,
+                Tamanho = produtoDto.Tamanho,
+                Cor = produtoDto.Cor,
+                Imagem = produtoDto.Imagem
             };
+
+            var productAddDto = new ProductAddDto(produto);
 
             _context.Produtos.Add(produto);
             await _context.SaveChangesAsync();
 
-            var productAddDTO = new ProductAddDTO
-            {
-                Id = produto.Id,
-                Nome = produto.Nome,
-                Quantidade = produto.Quantidade,
-                Tamanho = produto.Tamanho,
-                Cor = produto.Cor,
-                ImagemDTO = produto.Imagem
-            };
-
-            return CreatedAtAction(nameof(Get), new { id = produto.Id }, productAddDTO);
+            return CreatedAtAction(nameof(Get), new { id = produto.Id }, productAddDto);
         }
 
 

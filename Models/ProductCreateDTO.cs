@@ -1,6 +1,6 @@
 ﻿namespace PumpFit_Stock.Models
 {
-    public class ProductCreateDTO
+    public class ProductCreateDto
     {
         public string Nome { get; set; }
         public int Quantidade { get; set; }
@@ -8,11 +8,11 @@
         public string Cor { get; set; }
         public string Imagem { get; set; }
 
-        public ProductCreateDTO()
+        public ProductCreateDto()
         {
         }
 
-        public ProductCreateDTO(string nome, int quantidade, string tamanho, string cor, string imagem)
+        public ProductCreateDto(string nome, int quantidade, string tamanho, string cor, string imagem)
         {
             Nome = nome;
             Quantidade = quantidade;

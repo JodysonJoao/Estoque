@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const productBox = document.createElement('div');
                     productBox.classList.add('image-box');
                     productBox.innerHTML = `
-                        <img src="${produto.imagemDTO}" alt="${produto.nome}">
+                        <img src="${produto.imagemDto}" alt="${produto.nome}">
                         <div class="name">ID: ${produto.id}</div>
                         <div class="name">${produto.nome}</div>
                         <div class="details">Quantidade: ${produto.quantidade}</div>
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 quantidade: produto.quantidade,
                                 tamanho: produto.tamanho,
                                 cor: produto.cor,
-                                imagem: produto.imagemDTO
+                                imagem: produto.imagemDto
                             };
 
                             fetch(`/api/produtos/${produto.id}`, {
