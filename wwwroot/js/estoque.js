@@ -5,162 +5,126 @@ document.addEventListener('DOMContentLoaded', () => {
     const saleProductSelect = document.getElementById('sale-product');
 
     if (!addProductForm || !saleForm) {
-        console.error("Formulários não encontrados.");
+        console.error("Formularios não encontrados");
         return;
     }
 
-    const updateProductList = () => {
-        fetch('/api/produtos')
-            .then((response) => response.json())
-            .then((estoque) => {
-                productContainer.innerHTML = '';
-                saleProductSelect.innerHTML = '';
-
-                estoque.forEach((produto) => {
-                    const productBox = document.createElement('div');
-                    productBox.classList.add('image-box');
-                    productBox.innerHTML = `
-                        <img src="${produto.imagemDto}" alt="${produto.nome}">
-                        <div class="name">ID: ${produto.id}</div>
-                        <div class="name">${produto.nome}</div>
-                        <div class="details">Quantidade: ${produto.quantidade}</div>
-                        <div class="details">Tamanho: ${produto.tamanho}</div>
-                        <div class="details">Cor: ${produto.cor}</div>
-                        <button onclick="deleteProduct(${produto.id})">Excluir</button>
-                    `;
-                    productContainer.appendChild(productBox);
-
-                    const option = document.createElement('option');
-                    option.value = produto.id;
-                    option.textContent = `${produto.nome} - Tamanho: ${produto.tamanho}, Cor: ${produto.cor}`;
-                    saleProductSelect.appendChild(option);
-                });
-            })
-            .catch((error) => {
-                console.error('Erro ao carregar produtos:', error);
-            });
+    const fetchData = async (url, options = {}) => {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) throw new Error('Erro ao realizar a operação');
+            const text = await response.text();
+            return text ? JSON.parse(text) : {};
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
+        }
     };
 
-    addProductForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    const updateProductList = async () => {
+        const estoque = await fetchData('/api/produtos');
+        if (!estoque) return;
 
+        productContainer.innerHTML = '';
+        saleProductSelect.innerHTML = '';
+
+        estoque.forEach((produto) => {
+            const productBox = document.createElement('div');
+            productBox.classList.add('image-box');
+            productBox.innerHTML = `
+                <img src="${produto.imagem}" alt="${produto.nome}">
+                <div class="name">ID: ${produto.id}</div>
+                <div class="name">${produto.nome}</div>
+                <div class="details">Quantidade: ${produto.quantidade}</div>
+                <div class="details">Tamanho: ${produto.tamanho}</div>
+                <div class="details">Cor: ${produto.cor}</div>
+                <button onclick="deleteProduct(${produto.id})">Excluir</button>
+            `;
+            productContainer.appendChild(productBox);
+
+            const option = document.createElement('option');
+            option.value = produto.id;
+            option.textContent = `${produto.nome} - Tamanho: ${produto.tamanho}, Cor: ${produto.cor}`;
+            saleProductSelect.appendChild(option);
+        });
+    };
+
+    addProductForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
         const nome = document.getElementById('product-name').value;
         const quantidade = parseInt(document.getElementById('product-quantity').value);
         const tamanho = document.getElementById('product-size').value;
         const cor = document.getElementById('product-color').value;
         const imagemInput = document.getElementById('product-image');
 
-        if (nome && quantidade && tamanho && cor && imagemInput.files[0]) {
+        if (nome && quantidade > 0 && tamanho && cor && imagemInput.files[0]) {
             const reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = async function (event) {
                 const novoProduto = {
                     nome,
                     quantidade,
                     tamanho,
                     cor,
-                    imagem: e.target.result,
+                    imagem: event.target.result
                 };
 
-                fetch('/api/produtos', {
+                await fetchData('/api/produtos', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(novoProduto),
-                })
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error('Erro ao adicionar produto.');
-                        }
-                        return response.json();
-                    })
-                    .then(() => {
-                        updateProductList();
-                        addProductForm.reset();
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        alert('Erro ao adicionar produto.');
-                    });
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(novoProduto)
+                });
+                addProductForm.reset();
+                updateProductList();
             };
             reader.readAsDataURL(imagemInput.files[0]);
         } else {
-            alert('Por favor, preencha todos os campos para adicionar um produto.');
+            alert('Preencha todos os campos corretamente');
         }
     });
 
-    saleForm.addEventListener('submit', (e) => {
+    saleForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        const produtoId = parseInt(document.getElementById('sale-product').value);
+        const produtoId = parseInt(saleProductSelect.value);
         const quantidadeVenda = parseInt(document.getElementById('sale-quantity').value);
 
-        if (produtoId && quantidadeVenda) {
-            fetch('/api/produtos')
-                .then((response) => response.json())
-                .then((estoque) => {
-                    const produto = estoque.find((p) => p.id === produtoId);
-
-                    if (produto) {
-                        if (produto.quantidade >= quantidadeVenda) {
-                            produto.quantidade -= quantidadeVenda;
-
-                            const produtoAtualizado = {
-                                id: produto.id,
-                                nome: produto.nome,
-                                quantidade: produto.quantidade,
-                                tamanho: produto.tamanho,
-                                cor: produto.cor,
-                                imagem: produto.imagemDto
-                            };
-
-                            fetch(`/api/produtos/${produto.id}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(produtoAtualizado),
-                            })
-                                .then((response) => {
-                                    if (!response.ok) {
-                                        throw new Error('Erro ao atualizar produto.');
-                                    }
-                                    alert('Venda realizada com sucesso!');
-                                    updateProductList();
-                                    saleForm.reset();
-                                })
-                                .catch((error) => {
-                                    console.error('Erro ao atualizar produto:', error);
-                                    alert('Erro ao atualizar produto.');
-                                });
-                        } else {
-                            alert('Quantidade insuficiente em estoque.');
-                        }
-                    } else {
-                        alert('Produto não encontrado.');
-                    }
-                });
+        if (!produtoId || quantidadeVenda <= 0) {
+            alert('Dados inválidos para a venda');
+            return;
         }
+
+        const produto = await fetchData(`/api/produtos/${produtoId}`);
+        if (!produto) {
+            alert('Produto não encontrado');
+            return;
+        }
+
+        if (produto.quantidade < quantidadeVenda) {
+            alert('Quantidade insuficiente em estoque');
+            return;
+        }
+
+        const produtoAtualizado = {
+            ...produto,
+            quantidade: produto.quantidade - quantidadeVenda
+        };
+
+        await fetchData(`/api/produtos/${produtoId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(produtoAtualizado)
+        });
+
+        alert('Venda realizada com sucesso');
+        updateProductList();
+        saleForm.reset();
     });
 
+    window.deleteProduct = async (id) => {
+        const confirmDelete = confirm('Deseja realmente excluir o produto?');
+        if (!confirmDelete) return;
 
-    window.deleteProduct = (id) => {
-        fetch(`/api/produtos/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Erro ao deletar produto.');
-                }
-                updateProductList();
-            })
-            .catch((error) => {
-                console.error('Erro ao deletar produto:', error);
-                alert('Erro ao deletar produto.');
-            });
+        await fetchData(`/api/produtos/${id}`, { method: 'DELETE' });
+        updateProductList();
     };
 
     updateProductList();

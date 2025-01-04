@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PumpFit_Stock.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PumpFit_Stock.Controllers
@@ -11,120 +9,93 @@ namespace PumpFit_Stock.Controllers
     [Route("api/[controller]")]
     public class ProdutosController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ProductService _productService;
+        private readonly MappingProductService _mappingService;
+        private readonly StockService _stockService;
 
-        public ProdutosController(ApplicationDbContext context)
+        public ProdutosController(ProductService productService, MappingProductService mappingService, StockService stockService)
         {
-            _context = context;
+            _productService = productService;
+            _mappingService = mappingService;
+            _stockService = stockService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductAddDto>>> Get([FromServices] ProductMappingService mappingService)
+        public async Task<ActionResult<IEnumerable<ProductAddDto>>> Get()
         {
-            var produtos = await _context.Produtos
-                .OrderBy(p => p.Id)
-                .ToListAsync();
-
-            var produtosDto = produtos.Select(p => mappingService.ToAddDto(p)).ToList();
-
+            var produtos = await _productService.GetAllAsync();
+            var produtosDto = produtos.Select(p => _mappingService.ToAddDto(p)).ToList();
             return Ok(produtosDto);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductAddDto>> GetById(int id)
+        {
+            var produto = await _productService.GetByIdAsync(id);
+            if (produto == null)
+            {
+                return NotFound("Produto não encontrado.");
+            }
+            return Ok(_mappingService.ToAddDto(produto));
+        }
 
         [HttpPost]
         public async Task<ActionResult<ProductAddDto>> Post([FromBody] ProductCreateDto produtoDto)
         {
             if (produtoDto == null)
             {
-                return BadRequest("Produto não pode ser nulo.");
+                return BadRequest("Produto inválido.");
             }
 
-            var produto = new Produto
-            {
-                Nome = produtoDto.Nome,
-                Quantidade = produtoDto.Quantidade,
-                Tamanho = produtoDto.Tamanho,
-                Cor = produtoDto.Cor,
-                Imagem = produtoDto.Imagem
-            };
+            var produto = _mappingService.FromCreateDto(produtoDto);
+            await _productService.AddAsync(produto);
 
-            var productAddDto = new ProductAddDto(produto);
-
-            _context.Produtos.Add(produto);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(Get), new { id = produto.Id }, productAddDto);
+            var productAddDto = _mappingService.ToAddDto(produto);
+            return CreatedAtAction(nameof(GetById), new { id = produto.Id }, productAddDto);
         }
 
-
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Produto produto)
+        public async Task<IActionResult> Put(int id, [FromBody] ProductCreateDto produtoDto)
         {
-            if (id != produto.Id)
+            var produtoExistente = await _productService.GetByIdAsync(id);
+            if (produtoExistente == null)
             {
-                return BadRequest("ID do produto não corresponde ao ID da URL.");
+                return NotFound("Produto não encontrado.");
             }
 
-            _context.Entry(produto).State = EntityState.Modified;
+            produtoExistente.Nome = produtoDto.Nome;
+            produtoExistente.Quantidade = produtoDto.Quantidade;
+            produtoExistente.Tamanho = produtoDto.Tamanho;
+            produtoExistente.Cor = produtoDto.Cor;
+            produtoExistente.Imagem = produtoDto.Imagem;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProdutoExists(id))
-                {
-                    return NotFound("Produto não encontrado.");
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _productService.UpdateAsync(produtoExistente);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
+            var produto = await _productService.GetByIdAsync(id);
             if (produto == null)
             {
                 return NotFound("Produto não encontrado.");
             }
 
-            _context.Produtos.Remove(produto);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro ao deletar produto: {ex.Message}");
-                return StatusCode(500, "Erro ao deletar produto.");
-            }
-
+            await _productService.DeleteAsync(id);
             return NoContent();
         }
 
-        private async Task ReordenarIds()
+        [HttpPatch("{id}/estoque")]
+        public async Task<IActionResult> AtualizarEstoque(int id, [FromBody] int quantidade)
         {
-            var produtos = await _context.Produtos.OrderBy(p => p.Id).ToListAsync();
-
-            for (int i = 0; i < produtos.Count; i++)
+            var sucesso = await _stockService.AtualizarQuantidade(id, quantidade);
+            if (!sucesso)
             {
-                produtos[i].Id = i + 1;
-                _context.Entry(produtos[i]).State = EntityState.Modified;
+                return NotFound("Produto não encontrado.");
             }
 
-            await _context.SaveChangesAsync();
-        }
-
-        private bool ProdutoExists(int id)
-        {
-            return _context.Produtos.Any(e => e.Id == id);
+            return Ok($"Estoque atualizado com sucesso! Nova quantidade: {await _stockService.ObterQuantidadeDisponivel(id)}");
         }
     }
 }

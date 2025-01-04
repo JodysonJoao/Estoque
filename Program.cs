@@ -9,8 +9,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<ProductMappingService>();
-
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<MappingProductService>();
+builder.Services.AddScoped<StockService>();
 
 var app = builder.Build();
 

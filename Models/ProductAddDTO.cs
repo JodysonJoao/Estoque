@@ -7,7 +7,7 @@
         public int Quantidade { get; set; }
         public string Tamanho { get; set; }
         public string Cor { get; set; }
-        public string ImagemDto { get; set; }
+        public string Imagem { get; set; }
 
         public ProductAddDto(Produto produto)
         {
@@ -16,7 +16,7 @@
             Quantidade = produto.Quantidade;
             Tamanho = produto.Tamanho;
             Cor = produto.Cor;
-            ImagemDto = produto.Imagem;
+            Imagem = produto.Imagem;
         }
 
         public ProductAddDto()
@@ -30,7 +30,7 @@
             Quantidade = quantidade;
             Tamanho = tamanho;
             Cor = cor;
-            ImagemDto = imagemDto;
+            Imagem = imagemDto;
         }
     }
 }

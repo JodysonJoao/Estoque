@@ -1,6 +1,6 @@
 ﻿using PumpFit_Stock.Models;
 
-public class ProductMappingService
+public class MappingProductService
 {
     public ProductAddDto ToAddDto(Produto produto)
     {
@@ -11,7 +11,19 @@ public class ProductMappingService
             Quantidade = produto.Quantidade,
             Tamanho = produto.Tamanho,
             Cor = produto.Cor,
-            ImagemDto = produto.Imagem
+            Imagem = produto.Imagem
+        };
+    }
+
+    public Produto FromCreateDto(ProductCreateDto dto)
+    {
+        return new Produto
+        {
+            Nome = dto.Nome,
+            Quantidade = dto.Quantidade,
+            Tamanho = dto.Tamanho,
+            Cor = dto.Cor,
+            Imagem = dto.Imagem
         };
     }
 }
