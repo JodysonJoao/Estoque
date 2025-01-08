@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PumpFit_Stock.Auth.Models;
 
 namespace PumpFit_Stock.Models
 {

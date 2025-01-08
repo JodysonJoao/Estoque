@@ -51,23 +51,24 @@ body {
             color: white;
         }
 
-button.caixadelogi{
+button.submit-button {
     width: 55px;
     height: 30px;
-    background-color: #333; 
-    color: #fff; 
+    background-color: #333;
+    color: #fff;
     border: 1px solid #333;
     padding: 0;
     font-size: 12px;
-    font-family: Arial, sans-serif; 
-    border-radius: 4px; 
-    cursor: pointer; 
-    text-align: center; 
+    font-family: Arial, sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
     line-height: 10px;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
     button.submit-button:hover {
-        background-color: #555; 
-        border-color: #555; 
+        background-color: #555;
+        border-color: #555;
     }
+

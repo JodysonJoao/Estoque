@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PumpFit_Stock.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,6 +19,13 @@ namespace PumpFit_Stock.Controllers
             _productService = productService;
             _mappingService = mappingService;
             _stockService = stockService;
+        }
+
+        [HttpGet("private-data")]
+        [Authorize(Roles = "manager")]
+        public IActionResult GetPrivateData()
+        {
+            return Ok("dado protegido autorizado");
         }
 
         [HttpGet]
