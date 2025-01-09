@@ -1,5 +1,6 @@
 ﻿function Login()
 {
+    
     fetch('/api/auth/login', {
         method: 'POST',
         headers: {

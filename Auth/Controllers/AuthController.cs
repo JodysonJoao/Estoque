@@ -22,13 +22,14 @@ namespace PumpFit_Stock.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            if (request.Username == "stock" && request.Password == "54321")
+            if (request.Username == "Manager" && request.Password == "54321")
             {
                 var token = _jwtService.GenerateToken(request.Username, "manager");
                 return Ok(new { Token = token });
             }
 
-            return Unauthorized("Dados Invalidos");
+            return Unauthorized(new { message = "Dados inválidos" });
+
         }
     }
 

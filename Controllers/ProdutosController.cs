@@ -21,13 +21,6 @@ namespace PumpFit_Stock.Controllers
             _stockService = stockService;
         }
 
-        [HttpGet("private-data")]
-        [Authorize(Roles = "manager")]
-        public IActionResult GetPrivateData()
-        {
-            return Ok("dado protegido autorizado");
-        }
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductAddDto>>> Get()
         {
@@ -48,6 +41,7 @@ namespace PumpFit_Stock.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public async Task<ActionResult<ProductAddDto>> Post([FromBody] ProductCreateDto produtoDto)
         {
             if (produtoDto == null)
@@ -63,6 +57,7 @@ namespace PumpFit_Stock.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "manager")]
         public async Task<IActionResult> Put(int id, [FromBody] ProductCreateDto produtoDto)
         {
             var produtoExistente = await _productService.GetByIdAsync(id);
@@ -82,6 +77,7 @@ namespace PumpFit_Stock.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "manager")]
         public async Task<IActionResult> Delete(int id)
         {
             var produto = await _productService.GetByIdAsync(id);
@@ -95,6 +91,7 @@ namespace PumpFit_Stock.Controllers
         }
 
         [HttpPatch("{id}/estoque")]
+        [Authorize(Roles = "manager")]
         public async Task<IActionResult> AtualizarEstoque(int id, [FromBody] int quantidade)
         {
             var sucesso = await _stockService.AtualizarQuantidade(id, quantidade);
